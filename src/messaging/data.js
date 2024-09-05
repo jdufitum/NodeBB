@@ -79,20 +79,20 @@ module.exports = function (Messaging) {
 		if (messages.length > 1) {
 			// Add a spacer in between messages with time gaps between them
 			messages = messages.map((message, index) => {
-			// Compare timestamps with the previous message, and check if a spacer needs to be added
-			// If the previous message was from the other person, this is also a new set
-			if (index > 0) {
-				// Also check if the previous message was a system message, in which case we don't add a spacer
-				// Also check if the previous message was a new set, in which case we don't add a spacer
-				// Also check if the previous message was a system message, in which case we don't add a spacer
-				// Also check if the previous message was a new set, in which case we don't add a spacer
-				if (message.timestamp > messages[index - 1].timestamp + Messaging.newMessageCutoff() ||
-					message.fromUid !== messages[index - 1].fromUid ||
-					messages[index - 1].system) {
-					message.newSet = true;
+				// Compare timestamps with the previous message, and check if a spacer needs to be added
+				// If the previous message was from the other person, this is also a new set
+				if (index > 0) {
+					// Also check if the previous message was a system message, in which case we don't add a spacer
+					// Also check if the previous message was a new set, in which case we don't add a spacer
+					// Also check if the previous message was a system message, in which case we don't add a spacer
+					// Also check if the previous message was a new set, in which case we don't add a spacer
+					if (message.timestamp > messages[index - 1].timestamp + Messaging.newMessageCutoff() ||
+                        message.fromUid !== messages[index - 1].fromUid ||
+                        messages[index - 1].system) {
+						message.newSet = true;
+					}
 				}
-			}
-			return message;
+				return message;
 			});
 		} else if (messages.length === 1) {
 			// For single messages, we don't know the context, so look up the previous message and compare
@@ -102,8 +102,8 @@ module.exports = function (Messaging) {
 				const mid = await db.getSortedSetRange(key, index - 1, index - 1);
 				const fields = await Messaging.getMessageFields(mid, ['fromuid', 'timestamp']);
 				if ((messages[0].timestamp > fields.timestamp + Messaging.newMessageCutoff) ||
-					(messages[0].fromuid !== fields.fromuid) ||
-					messages[0].system || messages[0].toMid) {
+                    (messages[0].fromuid !== fields.fromuid) ||
+                    messages[0].system || messages[0].toMid) {
 					// If it's been 5 minutes, this is a new set of messages
 					messages[0].newSet = true;
 				}
