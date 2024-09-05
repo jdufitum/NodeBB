@@ -81,6 +81,8 @@ module.exports = function (Messaging) {
 			messages = messages.map((message, index) => {
 				// Compare timestamps with the previous message, and check if a spacer needs to be added
 				// Also check if the previous message was a system message, in which case we don't add a spacer
+				// Also check if the previous message was a new set, in which case we don't add a spacer
+				
 				if (index > 0) {
 					if (message.timestamp > messages[index - 1].timestamp + Messaging.newMessageCutoff() ||
 						message.fromUid !== messages[index - 1].fromUid ||
