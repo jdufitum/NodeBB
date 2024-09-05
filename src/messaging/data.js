@@ -88,8 +88,6 @@ module.exports = function (Messaging) {
 						message.newSet = true;
 					}
 				}
-				
-
 				return message;
 			});
 		} else if (messages.length === 1) {
