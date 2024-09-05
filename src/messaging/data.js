@@ -131,6 +131,7 @@ module.exports = function (Messaging) {
 		if (!parentMids.length) {
 			return;
 		}
+		// Get the unique parent mids
 		parentMids = _.uniq(parentMids);
 		const canView = await Messaging.canViewMessage(parentMids, roomId, uid);
 		parentMids = parentMids.filter((mid, idx) => canView[idx]);
@@ -138,6 +139,7 @@ module.exports = function (Messaging) {
 		const parentMessages = await Messaging.getMessagesFields(parentMids, [
 			'fromuid', 'content', 'timestamp', 'deleted',
 		]);
+		// Get the unique parent uids
 		const parentUids = _.uniq(parentMessages.map(msg => msg && msg.fromuid));
 		const usersMap = _.zipObject(
 			parentUids,
